@@ -3,37 +3,34 @@ package com.edulink.studentservice.service;
 import com.edulink.studentservice.client.CourseServiceClient;
 import com.edulink.studentservice.dto.SubmitAssignmentRequest;
 import com.edulink.studentservice.entity.*;
+import com.edulink.studentservice.exception.CourseNotFoundException;
+import com.edulink.studentservice.exception.StudentAlreadyEnrolledException;
+import com.edulink.studentservice.exception.StudentNotEnrolledInCourseException;
+import com.edulink.studentservice.exception.StudentProfileNotFoundException;
 import com.edulink.studentservice.repository.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class StudentService {
-
-    private static final Logger log = LoggerFactory.getLogger(StudentService.class);
 
     private final StudentProfileRepository profileRepo;
     private final EnrollmentRepository enrollmentRepo;
     private final AssignmentSubmissionRepository submissionRepo;
 
-    public StudentService(StudentProfileRepository profileRepo,
-                          EnrollmentRepository enrollmentRepo,
-                          AssignmentSubmissionRepository submissionRepo) {
-        this.profileRepo = profileRepo;
-        this.enrollmentRepo = enrollmentRepo;
-        this.submissionRepo = submissionRepo;
-    }
 
     public StudentProfile getStudentProfile(String userId) {
         return profileRepo.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Student profile not found"));
+                .orElseThrow(() -> new StudentProfileNotFoundException("userId", userId));
     }
 
     public StudentProfile getStudentProfileByEmail(String email) {
         return profileRepo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Student profile not found"));
+                .orElseThrow(() -> new StudentProfileNotFoundException("email", email));
     }
 
     public List<Enrollment> getEnrolledCoursesByEmail(String email) {
@@ -43,12 +40,15 @@ public class StudentService {
 
     public AssignmentSubmission submitAssignmentByEmail(String email, SubmitAssignmentRequest request) {
         StudentProfile profile = getStudentProfileByEmail(email);
+        if (!hasText(request.getSubmissionContent()) && !hasText(request.getFileUrl())) {
+            throw new IllegalArgumentException("Either submissionContent or fileUrl is required");
+        }
         // Check if student is enrolled in the course
         if (request.getCourseId() != null) {
             List<Enrollment> enrollments = enrollmentRepo.findByStudentId(profile.getId());
             boolean enrolled = enrollments.stream().anyMatch(e -> e.getCourseId().equals(request.getCourseId()));
             if (!enrolled) {
-                throw new RuntimeException("Student is not enrolled in the specified course");
+                throw new StudentNotEnrolledInCourseException(email, request.getCourseId());
             }
         }
         AssignmentSubmission submission = AssignmentSubmission.builder()
@@ -62,13 +62,17 @@ public class StudentService {
         return submissionRepo.save(submission);
     }
 
+    private boolean hasText(String value) {
+        return value != null && !value.trim().isEmpty();
+    }
+
     public void enrollInCourse(String userId, Long courseId) {
         StudentProfile profile = getStudentProfile(userId);
         // Check if already enrolled
         List<Enrollment> enrollments = enrollmentRepo.findByStudentId(profile.getId());
         boolean alreadyEnrolled = enrollments.stream().anyMatch(e -> e.getCourseId().equals(courseId));
         if (alreadyEnrolled) {
-            throw new RuntimeException("Student is already enrolled in this course");
+            throw new StudentAlreadyEnrolledException(profile.getEmail(), String.valueOf(courseId));
         }
         // TODO: Optionally validate course exists by calling course-service
         Enrollment enrollment = Enrollment.builder()
@@ -85,7 +89,7 @@ public class StudentService {
         List<Enrollment> enrollments = enrollmentRepo.findByStudentId(profile.getId());
         boolean alreadyEnrolled = enrollments.stream().anyMatch(e -> e.getCourseId().equals(courseId));
         if (alreadyEnrolled) {
-            throw new RuntimeException("Student is already enrolled in this course");
+            throw new StudentAlreadyEnrolledException(email, String.valueOf(courseId));
         }
         // TODO: Optionally validate course exists by calling course-service
         Enrollment enrollment = Enrollment.builder()
@@ -101,13 +105,13 @@ public class StudentService {
         // Get courseId from courseCode
         Long courseId = courseServiceClient.getCourseIdByCode(courseCode, token);
         if (courseId == null) {
-            throw new RuntimeException("Course not found");
+            throw new CourseNotFoundException(courseCode);
         }
         // Check if already enrolled
         List<Enrollment> enrollments = enrollmentRepo.findByStudentId(profile.getId());
         boolean alreadyEnrolled = enrollments.stream().anyMatch(e -> e.getCourseId().equals(courseId));
         if (alreadyEnrolled) {
-            throw new RuntimeException("Student is already enrolled in this course");
+            throw new StudentAlreadyEnrolledException(email, courseCode);
         }
         Enrollment enrollment = Enrollment.builder()
                 .studentId(profile.getId())

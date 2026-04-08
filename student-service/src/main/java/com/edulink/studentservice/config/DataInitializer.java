@@ -5,22 +5,16 @@ import com.edulink.studentservice.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDate;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @Configuration
+@Slf4j
+@RequiredArgsConstructor
 public class DataInitializer {
     private final StudentProfileRepository profileRepo;
     private final EnrollmentRepository enrollmentRepo;
-    private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
-
-    public DataInitializer(StudentProfileRepository profileRepo,
-                           EnrollmentRepository enrollmentRepo) {
-        this.profileRepo = profileRepo;
-        this.enrollmentRepo = enrollmentRepo;
-    }
 
     @Bean
     public CommandLineRunner initData() {

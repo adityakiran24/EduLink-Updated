@@ -9,18 +9,18 @@ import com.edulink.studentservice.service.StudentService;
 import com.edulink.studentservice.util.JwtExtractor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-// ...existing code...
+
 @RestController
 @RequestMapping("/student")
+@Slf4j
+@RequiredArgsConstructor
 public class StudentController {
-
-    private static final Logger log = LoggerFactory.getLogger(StudentController.class);
 
     private final StudentService studentService;
     private final JwtExtractor jwtExtractor;
@@ -28,17 +28,6 @@ public class StudentController {
     private final ExamServiceClient examServiceClient;
     private final AttendanceServiceClient attendanceServiceClient;
 
-    public StudentController(StudentService studentService,
-                             JwtExtractor jwtExtractor,
-                             CourseServiceClient courseServiceClient,
-                             ExamServiceClient examServiceClient,
-                             AttendanceServiceClient attendanceServiceClient) {
-        this.studentService = studentService;
-        this.jwtExtractor = jwtExtractor;
-        this.courseServiceClient = courseServiceClient;
-        this.examServiceClient = examServiceClient;
-        this.attendanceServiceClient = attendanceServiceClient;
-    }
 
     @GetMapping("/courses")
     public ResponseEntity<ApiResponse<List<Enrollment>>> getCourses(HttpServletRequest req) {
@@ -50,8 +39,8 @@ public class StudentController {
     public ResponseEntity<ApiResponse<Void>> enrollInCourse(HttpServletRequest req, @RequestBody Map<String, String> request) {
         String email = jwtExtractor.extractEmail(req);
         String courseCode = request.get("courseCode");
-        if (courseCode == null) {
-            return ResponseEntity.badRequest().body(ApiResponse.error("courseCode is required"));
+        if (courseCode == null || courseCode.isBlank()) {
+            throw new IllegalArgumentException("courseCode is required");
         }
         String token = jwtExtractor.extractToken(req);
         studentService.enrollInCourseByEmailAndCode(email, courseCode, courseServiceClient, token);
