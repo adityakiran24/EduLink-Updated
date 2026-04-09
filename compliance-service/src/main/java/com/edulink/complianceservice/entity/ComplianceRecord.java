@@ -1,55 +1,87 @@
 package com.edulink.complianceservice.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
-@Entity @Table(name = "compliance_records")
+
+@Entity
+@Table(name = "compliance_records")
 public class ComplianceRecord {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
-    private String schoolId; private String auditType; private String auditorEmail;
-    private String status; // COMPLIANT, NON_COMPLIANT, UNDER_REVIEW
-    private String findings; private String recommendations;
-    private LocalDateTime auditDate; private LocalDateTime createdAt;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public ComplianceRecord() {}
+    private String anotherId;
 
-    public ComplianceRecord(Long id, String schoolId, String auditType, String auditorEmail, String status, String findings, String recommendations, LocalDateTime auditDate, LocalDateTime createdAt) {
-        this.id = id;
-        this.schoolId = schoolId;
-        this.auditType = auditType;
-        this.auditorEmail = auditorEmail;
-        this.status = status;
-        this.findings = findings;
-        this.recommendations = recommendations;
-        this.auditDate = auditDate;
-        this.createdAt = createdAt;
+    private String auditType;
+
+    private String auditorEmail;
+
+    private String status;
+
+    private String recommendations;
+
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
     }
 
-    @PrePersist protected void onCreate() { createdAt = LocalDateTime.now(); auditDate = LocalDateTime.now(); }
+    public Long getId() {
+        return id;
+    }
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getSchoolId() { return schoolId; }
-    public void setSchoolId(String schoolId) { this.schoolId = schoolId; }
+    public String getAnotherId() {
+        return anotherId;
+    }
 
-    public String getAuditType() { return auditType; }
-    public void setAuditType(String auditType) { this.auditType = auditType; }
+    public void setAnotherId(String anotherId) {
+        this.anotherId = anotherId;
+    }
 
-    public String getAuditorEmail() { return auditorEmail; }
-    public void setAuditorEmail(String auditorEmail) { this.auditorEmail = auditorEmail; }
+    public String getAuditType() {
+        return auditType;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public void setAuditType(String auditType) {
+        this.auditType = auditType;
+    }
 
-    public String getFindings() { return findings; }
-    public void setFindings(String findings) { this.findings = findings; }
+    public String getAuditorEmail() {
+        return auditorEmail;
+    }
 
-    public String getRecommendations() { return recommendations; }
-    public void setRecommendations(String recommendations) { this.recommendations = recommendations; }
+    public void setAuditorEmail(String auditorEmail) {
+        this.auditorEmail = auditorEmail;
+    }
 
-    public LocalDateTime getAuditDate() { return auditDate; }
-    public void setAuditDate(LocalDateTime auditDate) { this.auditDate = auditDate; }
+    public String getStatus() {
+        return status;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(String recommendations) {
+        this.recommendations = recommendations;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
