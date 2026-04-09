@@ -12,15 +12,28 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
+<<<<<<< HEAD
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
+=======
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
 
+<<<<<<< HEAD
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
+=======
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
