@@ -2,9 +2,14 @@ package com.edulink.studentservice.client;
 
 import com.edulink.studentservice.dto.ApiResponse;
 import com.edulink.studentservice.dto.LearningMaterialDto;
+<<<<<<< HEAD
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+=======
 import com.edulink.studentservice.exception.UpstreamServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -18,15 +23,28 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+<<<<<<< HEAD
+public class CourseServiceClient {
+
+    private static final Logger log = LoggerFactory.getLogger(CourseServiceClient.class);
+
+=======
 @Slf4j
 @RequiredArgsConstructor
 public class CourseServiceClient {
 
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
     @Value("${course.service.url:http://localhost:8083}")
     private String courseServiceUrl;
 
     private final RestTemplate restTemplate;
 
+<<<<<<< HEAD
+    public CourseServiceClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+=======
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 
     public List<LearningMaterialDto> getMaterialsByCourseCode(String courseCode, String token) {
         try {
@@ -39,6 +57,12 @@ public class CourseServiceClient {
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 return response.getBody().getData();
             }
+<<<<<<< HEAD
+        } catch (Exception e) {
+            log.error("Failed to fetch materials for course: {}", courseCode, e);
+        }
+        return List.of();
+=======
             throw new UpstreamServiceException("Failed to fetch materials from course-service for courseCode: " + courseCode);
         } catch (UpstreamServiceException e) {
             throw e;
@@ -46,6 +70,7 @@ public class CourseServiceClient {
             log.error("Failed to fetch materials for course: {}", courseCode, e);
             throw new UpstreamServiceException("Failed to fetch materials from course-service for courseCode: " + courseCode, e);
         }
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
     }
 
     public List<LearningMaterialDto> getAssignmentsByCourseCode(String courseCode, String token) {
@@ -59,6 +84,12 @@ public class CourseServiceClient {
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 return response.getBody().getData();
             }
+<<<<<<< HEAD
+        } catch (Exception e) {
+            log.error("Failed to fetch assignments for course: {}", courseCode, e);
+        }
+        return List.of();
+=======
             throw new UpstreamServiceException("Failed to fetch assignments from course-service for courseCode: " + courseCode);
         } catch (UpstreamServiceException e) {
             throw e;
@@ -66,6 +97,7 @@ public class CourseServiceClient {
             log.error("Failed to fetch assignments for course: {}", courseCode, e);
             throw new UpstreamServiceException("Failed to fetch assignments from course-service for courseCode: " + courseCode, e);
         }
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
     }
 
     public boolean courseExists(Long courseId, String token) {
@@ -95,6 +127,14 @@ public class CourseServiceClient {
                     return ((Number) id).longValue();
                 }
             }
+<<<<<<< HEAD
+        } catch (Exception e) {
+            log.error("Failed to get course ID by code: {}", courseCode, e);
+        }
+        return null;
+    }
+}
+=======
             return null;
         } catch (Exception e) {
             log.error("Failed to get course ID by code: {}", courseCode, e);
@@ -103,3 +143,4 @@ public class CourseServiceClient {
     }
 }
 
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
