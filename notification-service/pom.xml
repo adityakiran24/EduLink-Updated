@@ -6,7 +6,10 @@
     <groupId>com.edulink</groupId><artifactId>notification-service</artifactId><version>1.0.0</version>
     <properties><java.version>17</java.version><jjwt.version>0.11.5</jjwt.version></properties>
     <dependencies>
+<<<<<<< HEAD
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-validation</artifactId></dependency>
+=======
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-security</artifactId></dependency>
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-jpa</artifactId></dependency>

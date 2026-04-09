@@ -1,9 +1,22 @@
 package com.edulink.studentservice.dto;
+<<<<<<< HEAD
+=======
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 public class ApiResponse<T> {
     private boolean success;
     private String message;
     private T data;
 
+<<<<<<< HEAD
     public ApiResponse() {
     }
 
@@ -50,5 +63,13 @@ public class ApiResponse<T> {
         resp.setSuccess(false);
         resp.setMessage(message);
         return resp;
+=======
+    public static <T> ApiResponse<T> success(String message, T data) {
+        return new ApiResponse<>(true, message, data);
+    }
+
+    public static <T> ApiResponse<T> error(String message) {
+        return new ApiResponse<>(false, message, null);
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
     }
 }

@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+<<<<<<< HEAD
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+=======
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;

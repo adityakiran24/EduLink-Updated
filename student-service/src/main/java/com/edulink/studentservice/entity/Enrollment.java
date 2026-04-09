@@ -1,10 +1,20 @@
 package com.edulink.studentservice.entity;
 
 import jakarta.persistence.*;
+<<<<<<< HEAD
+=======
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "enrollments")
+<<<<<<< HEAD
 public class Enrollment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -66,6 +76,39 @@ public class Enrollment {
         public Builder enrolledAt(LocalDateTime enrolledAt) { this.enrolledAt = enrolledAt; return this; }
         public Enrollment build() {
             return new Enrollment(id, studentId, courseId, courseName, courseCode, status, enrolledAt);
+=======
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Enrollment {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @Column(nullable = false)
+    private Long studentId;
+
+    @NotNull
+    @Column(nullable = false)
+    private Long courseId;
+
+    private String courseName;
+    private String courseCode;
+
+    @Column(nullable = false)
+    private String status; // ACTIVE, COMPLETED, DROPPED
+
+    @Column(nullable = false)
+    private LocalDateTime enrolledAt;
+
+    @PrePersist
+    protected void onCreate() {
+        enrolledAt = LocalDateTime.now();
+        if (status == null || status.trim().isEmpty()) {
+            status = "ACTIVE";
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
         }
     }
 }

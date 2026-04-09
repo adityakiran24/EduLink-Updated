@@ -1,7 +1,20 @@
 package com.edulink.studentservice.dto;
 
+<<<<<<< HEAD
 import java.time.LocalDateTime;
 
+=======
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 public class GradeDto {
     private Long id;
     private Long examId;
@@ -13,6 +26,7 @@ public class GradeDto {
     private String remarks;
     private LocalDateTime gradedAt;
 
+<<<<<<< HEAD
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public Long getExamId() { return examId; }
@@ -31,4 +45,6 @@ public class GradeDto {
     public void setRemarks(String remarks) { this.remarks = remarks; }
     public LocalDateTime getGradedAt() { return gradedAt; }
     public void setGradedAt(LocalDateTime gradedAt) { this.gradedAt = gradedAt; }
+=======
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 }

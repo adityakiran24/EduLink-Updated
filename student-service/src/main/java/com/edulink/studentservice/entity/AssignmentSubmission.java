@@ -1,10 +1,21 @@
 package com.edulink.studentservice.entity;
 
 import jakarta.persistence.*;
+<<<<<<< HEAD
+=======
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "assignment_submissions")
+<<<<<<< HEAD
 public class AssignmentSubmission {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -74,6 +85,43 @@ public class AssignmentSubmission {
         public AssignmentSubmission build() {
             return new AssignmentSubmission(id, studentId, assignmentId, assignmentTitle,
                     submissionContent, fileUrl, status, submittedAt);
+=======
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AssignmentSubmission {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @Column(nullable = false)
+    private Long studentId;
+
+    @NotNull
+    @Column(nullable = false)
+    private Long assignmentId;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String assignmentTitle;
+
+    private String submissionContent;
+    private String fileUrl;
+
+    @Column(nullable = false)
+    private String status; // SUBMITTED, GRADED, LATE
+
+    @Column(nullable = false)
+    private LocalDateTime submittedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        submittedAt = LocalDateTime.now();
+        if (status == null || status.trim().isEmpty()) {
+            status = "SUBMITTED";
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
         }
     }
 }

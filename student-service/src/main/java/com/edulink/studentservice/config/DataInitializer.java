@@ -5,6 +5,7 @@ import com.edulink.studentservice.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+<<<<<<< HEAD
 import java.time.LocalDate;
 
 import org.slf4j.Logger;
@@ -21,6 +22,18 @@ public class DataInitializer {
         this.profileRepo = profileRepo;
         this.enrollmentRepo = enrollmentRepo;
     }
+=======
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDate;
+
+@Configuration
+@Slf4j
+@RequiredArgsConstructor
+public class DataInitializer {
+    private final StudentProfileRepository profileRepo;
+    private final EnrollmentRepository enrollmentRepo;
+>>>>>>> 7cd35352abea80eb91e75cf8ea2946e5a5613c06
 
     @Bean
     public CommandLineRunner initData() {
